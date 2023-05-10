@@ -11,10 +11,10 @@ require 'spirit_hands/prompt'
 require 'spirit_hands/terminal' 
 require 'spirit_hands/version'
 require 'spirit_hands/melody'
-if defined? ::Rails
+if Kernel.const_defined?(:Rails)
+  require 'pry'
   require 'pry-rails'
   require 'spirit_hands/railtie'
-  Pry.plugins['rails'].activate!
 else
   SpiritHands.melody!
 end

@@ -3,10 +3,10 @@ require 'spirit_hands/prompt/multiline'
 
 module SpiritHands
   module Prompt
-    class << self
-      def install!
-        ::Pry.config.prompt = [ main, multiline ].freeze
-      end
-    end # self
-  end # Prompt
-end # SpiritHands
+    module_function
+
+    def install!
+      Pry.config.prompt = Pry::Prompt.new :spirit_hands, 'Jazz for your pry', [ main, multiline ].freeze
+    end
+  end
+end

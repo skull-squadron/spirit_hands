@@ -11,28 +11,13 @@ module SpiritHands
 
   protected
 
-    def install_coolline!
-      return if coolline_installed?
-      Pry.plugins['coolline'].activate!
-      self.input_config = @coolline_input
-    end
-
-    def uninstall_coolline!
-      return unless coolline_installed?
-      Pry.plugins['coolline'].disable!
-      self.input_config = @orig_input
-    end
-
     def coolline_installed?
       Pry.input == @coolline_input[0]
     end
 
     def setup_coolline!
-      if coolline
-        install_coolline!
-      else
-        uninstall_coolline!
-      end
+      return if coolline_installed?
+      self.input_config = @coolline_input
     end
 
     def input_config=(args)

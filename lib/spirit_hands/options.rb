@@ -1,4 +1,3 @@
-# encoding: UTF-8
 require 'readline'
 require 'spirit_hands/mattr_accessor_with_default'
 require 'spirit_hands/options/coolline'
@@ -17,24 +16,41 @@ module SpiritHands
 
   # Name of the app, which can be displayed to <app/> tag in prompt
   mattr_accessor_with_default :app, -> {
-    if defined?(::Rails)
+    if const_defined?(:Rails)
       ::Rails.application
     else
       # Trumpet emoji or pry
-      (Terminal.unicode?) ? "\u{1F3BA}" : 'pry'
+      (Terminal.unicode?) ? "spirit" : 'pry'
     end
   }
+
+  ENV_COLORS = {
+    'development'  => 'green',
+    'test'         => 'cyan',
+    'production'   => 'red',
+    'staging'      => 'yellow',
+  }
+
+  def self.env_color
+    if const_defined?(:Rails)
+      ENV_COLORS[::Rails.env] || 'cyan'
+    else
+      'white'
+    end
+  end
 
   # <color>...</color>
   # <bold>...</color>
   # <cmd/>  command number
-  # <app/>  SpiritHands.app, which can be String or a Rails Applicatino object
+  # <app/>  SpiritHands.app, which can be String or a Rails Application object
   # <sep/>  SpiritHands.prompt_separator
   #
   # Use \ to escape literal <, so in a Ruby string constant, "\\<"
   #
-  mattr_accessor_with_default :prompt,
-    '<b>[<cmd/>]</b> <blue><app/></blue><tgt/>  <red><sep/></red>  '
+  mattr_accessor_with_default :prompt, -> {
+    ec = env_color
+    "<b>[<cmd/>]</b> <b><blue><app/></blue></b><b><#{ec}><env/></#{ec}></b><tgt/> <b><red><sep/></red></b> "
+  }
 
   # Color the prompt?
   #
@@ -52,7 +68,7 @@ module SpiritHands
   # Default: right angle quote (chevron) or >
   #
   mattr_accessor_with_default :prompt_separator, -> {
-    (Terminal.unicode?) ? "\u{BB}" : '>'
+    (Terminal.unicode?) ? "❯" : '>'
   }
 
   # Enable or disable AwesomePrint (default: true)

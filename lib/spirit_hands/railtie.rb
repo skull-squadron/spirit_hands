@@ -1,5 +1,5 @@
 class Railtie < Rails::Railtie
-  initializer 'spirit_hands.initialize' do |app|
+  config.before_initialize do |app|
     @@app = app
   end
 

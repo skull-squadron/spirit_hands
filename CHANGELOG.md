@@ -1,3 +1,6 @@
+## 2.1.4 (2023
+* Drop plugin support
+
 ## 2.1.0 (2016-11-19)
 * Remove [pry-remote][pry-remote]
 

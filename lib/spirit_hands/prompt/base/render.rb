@@ -59,12 +59,11 @@ module SpiritHands
       # <.../>
       SINGLE_TAGS = {
         # <cmd/>: command number
-        'cmd' =>
-          lambda do |state|
-            pry = state.pry
-            (pry.respond_to?(:input_ring) ? pry.input_ring : pry.input_array)
-              .size
-          end,
+        'cmd' => ->(state) {
+          pry = state.pry
+          (pry.respond_to?(:input_ring) ? pry.input_ring : pry.input_array)
+            .size
+        },
 
         # <tgt/>: target string
         'tgt' => ->(state) {
@@ -90,6 +89,15 @@ module SpiritHands
           else
             ::SpiritHands.app
           end
+        },
+
+        'env' => ->(state) {
+          if env = const_defined?(:Rails)
+            Rails.env
+          else
+            ENV['RAILS_ENV'] || ENV['RACK_ENV']
+          end
+          " #{env}" if env
         },
 
         # <sep/>: SpiritHands.prompt_separator
