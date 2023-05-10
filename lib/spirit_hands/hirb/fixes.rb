@@ -1,0 +1,5 @@
+require 'hirb'
+require 'spirit_hands/hirb/fixes/pager'
+require 'spirit_hands/hirb/fixes/util'
+require 'spirit_hands/hirb/fixes/view'
+require 'spirit_hands/hirb/fixes/enabled'
